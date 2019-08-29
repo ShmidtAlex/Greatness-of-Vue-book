@@ -1,6 +1,6 @@
 {
-  "name": "english-lessons-app",
-  "short_name": "english-lessons-app",
+  "name": "vue-english",
+  "short_name": "vue-english",
   "icons": [
     {
       "src": "./img/icons/android-chrome-192x192.png",

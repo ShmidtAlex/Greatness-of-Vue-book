@@ -1,4 +1,4 @@
-# english-lessons-app
+# vue-english
 
 ## Project setup
 ```
