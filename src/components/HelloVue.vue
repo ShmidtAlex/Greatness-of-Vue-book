@@ -30,15 +30,16 @@ export default {
 <template>
    <div class="hello">
     <h1>{{ msg }}</h1>
-    <div class="word_card">
+    <!-- <div class="word_card">
       <textarea v-model="parents" name="" id="" cols="30" rows="10"></textarea>
       <div class="parentsName">My parents' name are {{ parents }}</div>
 
       <button v-show="parents" class="delete" @click='clearParentsField'>delete</button>
+       -->
       <!-- Important: use v-show, when your elements are going to switch often 
           otherwise use v-if (becouse of it has high coast of switching but fast displaying) -->
 
-    </div>
+    <!-- </div>  -->
     <h3>V-for demo</h3>
     <ul class="list-group"><li v-for="i in 5"class="list-group-item">{{i}} * 4  = {{i*4}}</li></ul> 
     <h3>Success stories</h3>
