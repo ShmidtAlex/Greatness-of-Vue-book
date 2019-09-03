@@ -53,6 +53,8 @@
 				screenValue: '0',
 				runningValue: '',
 				result: null,
+				accomodationString: ''/*add all results and acrions to the small string
+				on the top of the string*/
 			}
 		},
 		methods: {
@@ -62,7 +64,7 @@
 				this.screenValue = '0';
 			},
 			plus: function() {
-				//можно переделать, через   v-bind прямо в теге
+				//можно переделать, через   v-bind прямо в теге?
 				this.runningOperator = "+";				
 			},
 			multiply: function() {
@@ -87,28 +89,34 @@
 					this.runningValue = event.target.value;
 					this.screenValue = this.runningValue;
 				}
-				
 			},
 			equalTo: function() {
 				switch (this.runningOperator) {
 					case this.runningOperator = "+": 
 						if (this.initialValue !== '0') {
 						 this.screenValue = Number(this.initialValue) + Number(this.runningValue);
+						 this.initialValue = this.screenValue;
 						}
 						break;
 					case this.runningOperator = "*":
 						if (this.initialValue !== '0') {
 						 this.screenValue = Number(this.initialValue) * Number(this.runningValue);
+						  this.initialValue = this.screenValue;
+
 						}
 						break;
 					case this.runningOperator = "-":
 						if (this.initialValue !== '0') {
 						 this.screenValue = Number(this.initialValue) - Number(this.runningValue);
+						 this.initialValue = this.screenValue;
+
 						}
 						break;
 					case this.runningOperator = "/":
 						if (this.initialValue !== '0') {
 						 this.screenValue = Number(this.initialValue) / Number(this.runningValue);
+						 this.initialValue = this.screenValue;
+
 						}
 						break;		
 
