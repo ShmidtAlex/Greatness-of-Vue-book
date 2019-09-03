@@ -11,30 +11,32 @@
 				<div class="screen_wrapper__battery_item"></div>
 				<div class="screen_wrapper__battery_item"></div>
 			</div>
-			<div class="screen_wrapper__resuls">{{initialValue}}</div>
+			<div class="screen_wrapper__resuls">
+				<div class="screen_wrapper__mathAction">{{runningOperator}}</div>
+				{{screenValue}}</div>
 		</div>
 		<div class="number_wrapper">
 			<div class="number_wrapper__form"><!--I'm not sure, that tag "form" is
 				necessary in this case-->
 				<div class="number_wrapper__numbers">
-					<input type="button" class="number_wrapper__number" value=1>
-					<input type="button" class="number_wrapper__number" value=2>
-					<input type="button" class="number_wrapper__number" value=3>
-					<input type="button" class="number_wrapper__number" value=4>
-					<input type="button" class="number_wrapper__number" value=5>
-					<input type="button" class="number_wrapper__number" value=6>
-					<input type="button" class="number_wrapper__number" value=7>
-					<input type="button" class="number_wrapper__number" value=8>
-					<input type="button" class="number_wrapper__number" value=9>
-					<input type="button" class="number_wrapper__number" value=0>
+					<input @click="addToScreen" type="button" class="number_wrapper__number" value=7>
+					<input @click="addToScreen" type="button" class="number_wrapper__number" value=8>
+					<input @click="addToScreen" type="button" class="number_wrapper__number" value=9>
+					<input @click="addToScreen" type="button" class="number_wrapper__number" value=4>
+					<input @click="addToScreen" type="button" class="number_wrapper__number" value=5>
+					<input @click="addToScreen" type="button" class="number_wrapper__number" value=6>
+					<input @click="addToScreen" type="button" class="number_wrapper__number" value=1>
+					<input @click="addToScreen" type="button" class="number_wrapper__number" value=2>
+					<input  @click="addToScreen"type="button" class="number_wrapper__number" value=3>
+					<input @click="addToScreen" type="button" class="number_wrapper__number" value=0>
 				</div>
 				<div class="number_wrapper__math-signs">
-					<input type="button" class="number_wrapper__sign" value="C">
-					<input type="button" class="number_wrapper__sign" value="+">
-					<input type="button" class="number_wrapper__sign" value="-">
-					<input type="button" class="number_wrapper__sign" value="*">
-					<input type="button" class="number_wrapper__sign" value="/">
-					<input type="button" class="number_wrapper__sign" value="=">
+					<input @click="clear" type="button" class="number_wrapper__sign" value="C">
+					<input @click="plus" type="button" class="number_wrapper__sign" value="+">
+					<input @click="minus" type="button" class="number_wrapper__sign" value="-">
+					<input @click="multiply" type="button" class="number_wrapper__sign" value="*">
+					<input @click="devide" type="button" class="number_wrapper__sign" value="/">
+					<input @click="equalTo" type="button" class="number_wrapper__sign" value="=">
 				</div>
 			</div>
 			
@@ -46,8 +48,72 @@
 		name: "Calculator",
 		data: function() {
 			return {
-				initialValue: 0,
-				runningOperator: "+",
+				initialValue: '0',
+				runningOperator: null,
+				screenValue: '0',
+				runningValue: '',
+				result: null,
+			}
+		},
+		methods: {
+			clear: function() {
+				this.initialValue = '0';
+				this.runningOperator = null;
+				this.screenValue = '0';
+			},
+			plus: function() {
+				//можно переделать, через   v-bind прямо в теге
+				this.runningOperator = "+";				
+			},
+			multiply: function() {
+				this.runningOperator = "*";				
+			},
+			minus: function() {
+				this.runningOperator = "-";
+			},
+			devide: function() {
+				this.runningOperator = "/";
+			},
+			addToScreen: function() {
+				if (this.initialValue === '0') {
+					this.initialValue = event.target.value;
+					this.screenValue = this.initialValue;
+				} else if (this.initialValue !== '0' && !this.runningOperator) {
+					this.initialValue += event.target.value;
+					// заменить на  watch or calculated
+					this.screenValue = this.initialValue;
+
+				} else {
+					this.runningValue = event.target.value;
+					this.screenValue = this.runningValue;
+				}
+				
+			},
+			equalTo: function() {
+				switch (this.runningOperator) {
+					case this.runningOperator = "+": 
+						if (this.initialValue !== '0') {
+						 this.screenValue = Number(this.initialValue) + Number(this.runningValue);
+						}
+						break;
+					case this.runningOperator = "*":
+						if (this.initialValue !== '0') {
+						 this.screenValue = Number(this.initialValue) * Number(this.runningValue);
+						}
+						break;
+					case this.runningOperator = "-":
+						if (this.initialValue !== '0') {
+						 this.screenValue = Number(this.initialValue) - Number(this.runningValue);
+						}
+						break;
+					case this.runningOperator = "/":
+						if (this.initialValue !== '0') {
+						 this.screenValue = Number(this.initialValue) / Number(this.runningValue);
+						}
+						break;		
+
+					default: return;
+				}				 
 			}
 		}
 	}
@@ -104,13 +170,20 @@
 		background-color: rgba(240,240,240, .6);
 		display: flex;
 		flex-direction: row;
-		justify-content: flex-end;
+		justify-content: space-between;
 		align-items: center;
 		padding: 10px;
 		font-weight: 800;
 		font-size: 30px;
 	}
-
+	.screen_wrapper__mathAction {
+		width: 20px;
+		height: 20px;
+		background-color: darkgray;
+		color:white;
+		align-self: flex-start;
+		font-size: 15px;
+	}
 	.number_wrapper {
 		height: 70%;
 		width:97%;
