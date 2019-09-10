@@ -5,18 +5,21 @@
     <h1>Here is the page, where I will learn vue!</h1>
     <HelloVue msg="Hello, Your Magesty, Vue"/>
     <Calculator />
+    <Calcex/>
   </div>
 </template>
 
 <script>
 import HelloVue from "@/components/HelloVue.vue";
-import Calculator from "@/components/Calculator.vue"
+import Calculator from "@/components/Calculator.vue";
+import Calcex from "@/components/Calc_ex.vue"; 
 
 export default {
   name: "about",
   components: {
   	HelloVue,
-    Calculator
+    Calculator,
+    Calcex
   }
 };
 </script>
