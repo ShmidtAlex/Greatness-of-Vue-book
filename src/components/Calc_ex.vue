@@ -15,7 +15,7 @@
 			</button> 
 		</form>
 		<h2>Результат: {{a}} {{operator}} {{b}} = {{c}}</h2>
-		<pre>{{ $data }}</pre> </div>
+		<pre>{{ $data }}</pre> </div><!--for displaying data as it is-->
 </template>
 <script>
 	export default {
