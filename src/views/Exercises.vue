@@ -2,16 +2,19 @@
   <div class="about">
     <h1>Exercises from the book</h1>
     <Calcex/>
+    <Elections/>
   </div>
 </template>
 
 <script>
 import Calcex from "@/components/Calc_ex.vue"; 
+import Elections from "@/components/MayorElections";
 
 export default {
   name: "exercises",
   components: {
-    Calcex
+    Calcex,
+    Elections
   }
 };
 </script>
@@ -22,6 +25,6 @@ export default {
 		justify-content: space-around;
 		align-items: center; 
 		background-color: rgba(220, 220, 200, 0.5);
-		
+
 	}
 </style>

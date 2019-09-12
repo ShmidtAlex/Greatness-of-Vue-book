@@ -24,26 +24,30 @@
 			return {
 				a: 1,
 				b: 2,
-				c: null,
 				operator: '+'
 			}
 		},
-		methods: {
-			calculate: function() {
+		computed: {
+			c: {
 				//event.preventDefault();//аналогичным способом можно добавить превент-дефолт прямо на кнопку (см. DOM)
-				switch (this.operator) { 
-					case '+':
-						this.c = this.a + this.b
-						break; 
-					case '-':
-						this.c = this.a - this.b
-						break; 
-					case '*':
-						this.c = this.a * this.b
-						break; 
-					case '/':
-						this.c = this.a / this.b
-						break; 
+				get: function() {
+					switch (this.operator) { 
+						case '+':
+							return this.c = this.a + this.b
+							break; 
+						case '-':
+							return this.c = this.a - this.b
+							break; 
+						case '*':
+							return this.c = this.a * this.b
+							break; 
+						case '/':
+							return this.c = this.a / this.b
+							break; 
+					}
+				},
+				set: function(newValue) {
+					return newValue;
 				}
 			}
 		}

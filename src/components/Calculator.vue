@@ -316,9 +316,9 @@
 		padding: 0 2px;
 	}
 	.tumbler__area {
-		position: relative;
-		width: 97%;
-		height: 80%;
+	  position: relative;
+	  width: 97%;
+	  height: 80%;
 		background-color: lightgray;
 		border-radius: 20px;
 		border: 1px solid darkgray;
@@ -329,7 +329,6 @@
 	}
 	.on {
 		/*justify-content: flex-start;*/
-		
 		margin-left: 35px !important;
 	}
 	.tumbler__button {
