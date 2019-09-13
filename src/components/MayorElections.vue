@@ -50,8 +50,11 @@
 				return self.candidates.votes;
 			},
 			findRunningMayor: function() {
-				// this special massive for voutes values. we need it for avoiding changing candidates 
-        // position according to his place in election, now user can tap vote button without necessarity to check if candidate position has not been changed
+        /*it's not very convinient, that candidates move up when their voter numbers grows up
+          user has to search his candidate button again and again while voting continuing. For
+          avoiding it we do not sort the whole candidate array, we create new array and push our
+          objects into it. That won't possible to do that by assigning whole array to new array.
+        */
 				let ourMayorIs2 = [];
         this.candidates.forEach(function(element) {
           ourMayorIs2.push(element);

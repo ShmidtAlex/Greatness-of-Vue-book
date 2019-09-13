@@ -3,18 +3,21 @@
     <h1>Exercises from the book</h1>
     <Calcex/>
     <Elections/>
+    <Stories/>
   </div>
 </template>
 
 <script>
 import Calcex from "@/components/Calc_ex.vue"; 
 import Elections from "@/components/MayorElections";
+import Stories from "@/components/StoriesFilter.vue";
 
 export default {
   name: "exercises",
   components: {
     Calcex,
-    Elections
+    Elections,
+    Stories
   }
 };
 </script>
