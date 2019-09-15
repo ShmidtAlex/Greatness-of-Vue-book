@@ -8,6 +8,7 @@
 		</ul>
 		
 		<h3>John Stories</h3>
+    
 		<ul class="list-group">
       <!-- yes, we can use new array, which is the result of function storiesBy -->
 			<li v-for="(story, index) in storiesBy('John')" :key="index" class="list-group-item">
@@ -22,7 +23,16 @@
         </li>
       </ul>
     </div>
-      <pre>{{$data}}</pre>
+    <pre>{{$data}}</pre>
+    <div class="form-group">
+      <label for="query">Type what are you searching for</label>
+      <input v-model="query" class="form-control">
+    </div>
+    <ul class="list-group">
+      <li v-for="(story, index) in search" :key="index" class="list-group-item">
+        {{ story.writer }} сказал "{{ story.plot }}"
+      </li> 
+    </ul>
     
 
 	</div>
@@ -53,7 +63,8 @@
             writer: "Alex",
             upvotes: 31,
           },
-				]
+				],
+        query: ' ',
 			}
 		},
     methods: {
@@ -68,6 +79,12 @@
         return this.stories.filter(function(item) {
           return item.upvotes > 25;
         });
+      },
+      search: function() {
+        let query = this.query;
+        return this.stories.filter(function(story){
+          return story.plot.includes(query);
+        })
       }
     }
 	}
