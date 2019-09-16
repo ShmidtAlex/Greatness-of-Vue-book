@@ -155,7 +155,6 @@
 				} else {
 					return;
 				}
-				
 			},
 			equalTo: function() {
 				switch (this.runningOperator) {
