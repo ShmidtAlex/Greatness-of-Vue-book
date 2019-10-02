@@ -17,12 +17,11 @@ export default {
 };
 </script>
 <style>
-	.about {
-		display: flex;
-		flex-direction: column;
-		justify-content: space-around;
-		align-items: center; 
-		background-color: rgba(220, 220, 200, 0.5);
-
-	}
+  .about {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center; 
+    background-color: rgba(220, 220, 200, 0.5);
+  }
 </style>
