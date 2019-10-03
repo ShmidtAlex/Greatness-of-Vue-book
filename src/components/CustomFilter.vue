@@ -11,7 +11,7 @@
     <h3>filtration with third-party library (lodash)</h3>
     <h4> kids raiting based on intelligence </h4>
     <ul class="list-group">
-      <li v-for="(kid, kidIndex) in _.orderBy(this.kids, ['intelligence'], [order])" :key="kidIndex">Name: {{ kid.name }}Strength: {{ kid.strength }}Intelligence: {{ kid.intelligence }}</li>
+      <li v-for="(kid, kidIndex) in orderedKidsList" :key="kidIndex">Name: {{ kid.name }}Strength: {{ kid.strength }}Intelligence {{ kid.intelligence }}</li>
     </ul>
     <button class="btn btn-primary" type="button" @click="reverseOrder">reverse!</button>
   </div>
@@ -20,10 +20,14 @@
 </template>
 <script>
   import Vue from "vue";
+  import _ from "lodash";
+
+
   Vue.filter('snitch', function(hero){
     return hero.secretId + ' - это ' + hero.firstName + ' ' + hero.lastName + ' в реальной жизни!';
   })
-  var _ = require('lodash');
+  //var _ = require('lodash');
+
   export default {
     name: 'Custom',
     data: function() {
@@ -45,7 +49,7 @@
     },
     methods: {
       reverseOrder: function() {
-        console.log("it works!");
+        // console.log("it works!");
         this.order = (this.order === 'desc') ? 'asc' : 'desc';
       }
     },
