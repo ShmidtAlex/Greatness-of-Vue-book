@@ -18,19 +18,21 @@
       <h3>Serp Filters</h3>
       <ul class="list-group inline">
         <li v-for="(amenity, amenityIndex) in amenities" :key="amenityIndex" class="amenity_button">
-          <button class="btn">{{amenity.name}}</button></li>
+          <button @click="changeFilterValue(amenity.name)" class="btn">{{amenity.name}}</button></li>
       </ul>
-      <div v-for="(hotel, hotelIndex) in hotels" :key="hotelIndex" class="hotel_item">
+      <!-- <div>this div is really exist {{hotels}}</div> -->
+      <div v-for="(hotel, hotelIndex) in showHasAmenityOnly" :key="hotelIndex" class="hotel_item">
+        <div><b><i>{{ hotelIndex+1 }}</i></b></div>
         <div class="hotel_photo">{{ hotel.photo }}</div>
         <div class="hotel_info">
           <div class="hotel_name">{{ hotel.name }}</div>
           <div class="hotel_address">{{ hotel.address }} </div>
           <div class="hotel_amenities">
             <ul class="list-group">
-             <li v-for="(amenity, amenityIndex) in hotel.amenities" :key="amenityIndex" class="amenity_item"></li>
+             <li v-for="(amenity, amenityIndex) in hotel.amenities" :key="amenityIndex" class="amenity_item">{{ amenity.name }}</li>
             </ul>
           </div>
-          <div class="hotel_prices">{{hotel.price}}</div>
+          <div class="hotel_prices">{{ hotel.price }} rub</div>
         </div>
       </div>
       
@@ -68,44 +70,44 @@
           { photo: "/some_address/some_photo.png", name: "Hotel Moscow Name", address: "Moscow, some street, 1",
               amenities: [
                 { name: 'wi-fi'}, { name: 'bar'}, { name: 'pool'}, { name: 'transfer'},
-                { name: 'bath'}, { name: 'breakfast'}, { name: 'spa'}
+                { name: 'bath'}, { name: 'breakfast'}, { name: 'spa'}, {name: 'default'}
               ],
             price: 3000  
            },
            { photo: "/some_address/some_photo.png", name: "Hotel  St.Pitersberg Name", address: "sSt.Pitersberg, some street, 2",
               amenities: [
                 { name: 'wi-fi'}, { name: 'bar'}, { name: 'fitness'}, { name: 'transfer'},
-                { name: 'bath'}, { name: 'breakfast'}, { name: 'spa'}
+                { name: 'bath'}, { name: 'breakfast'}, { name: 'spa'}, {name: 'default'}
               ],
-            price: 3000  
+            price: 4000  
            },
            { photo: "/some_address/some_photo.png", name: "Hotel Helsinki Name", address: "Helsinki, some street, 3",
               amenities: [
                 { name: 'wi-fi'}, { name: 'bar'}, { name: 'fitness'}, { name: 'pool'},
-                { name: 'bath'}, { name: 'breakfast'}, { name: 'spa'}
+                { name: 'bath'}, { name: 'breakfast'}, { name: 'spa'}, {name: 'default'}
               ],
-            price: 3000  
+            price: 6000  
            },
            { photo: "/some_address/some_photo.png", name: "Hotel Barselona Name", address: "Barselona, some street, 4",
               amenities: [
                 { name: 'wi-fi'}, { name: 'bar'}, { name: 'fitness'}, { name: 'pool'}, { name: 'transfer'},
-                { name: 'breakfast'}, { name: 'spa'}
+                { name: 'breakfast'}, { name: 'spa'}, {name: 'default'} 
               ],
-            price: 3000  
+            price: 7000  
            },
            { photo: "/some_address/some_photo.png", name: "Hotel Berlin Name", address: "Berlin, some street, 5",
               amenities: [
                 { name: 'wi-fi'}, { name: 'bar'}, { name: 'fitness'}, { name: 'pool'}, { name: 'transfer'},
-                { name: 'bath'}, { name: 'spa'}
+                { name: 'bath'}, { name: 'spa'}, {name: 'default'}
               ],
-            price: 3000  
+            price: 8000  
            },
            { photo: "/some_address/some_photo.png", name: "Hotel Lisbon Name", address: "Lisbon, some street, 6",
               amenities: [
                 { name: 'wi-fi'}, { name: 'bar'}, { name: 'fitness'}, { name: 'pool'}, { name: 'transfer'},
-                { name: 'bath'}, { name: 'breakfast'}
+                { name: 'bath'}, { name: 'breakfast'}, {name: 'default'}
               ],
-            price: 3000  
+            price: 9000  
            },
         ],
         amenities: [
@@ -118,16 +120,25 @@
           { name: 'breakfast'},
           { name: 'spa'}
         ],
-        hotels: [
-
-        ]
+        filterValue: 'default',
       }
     },
     methods: {
       reverseOrder: function() {
         // console.log("it works!");
         this.order = (this.order === 'desc') ? 'asc' : 'desc';
-      }
+      },
+      changeFilterValue: function(choosenAmenity) {
+        this.filterValue = choosenAmenity;
+      },
+      
+    },
+    mounted: function () {
+      this.$nextTick(function () {
+        this.refreshedHotels = this.hotels;
+        // Code that will run only after the
+        // entire view has been rendered
+      })
     },
     computed: {
       orderedKidsList: function(){
@@ -136,9 +147,16 @@
         //second argument is a parameter of sorting
         //third argument is a type of sorting, defined in methods (see below);
       },
-      
-    },
-    
+      showHasAmenityOnly: function() {
+        let runningFilter = this.filterValue;
+        return this.hotels.filter(function(hotel){
+          let newAmenities = hotel.amenities.filter(function(amenity){
+             return amenity.name === runningFilter;
+          })
+          return newAmenities.length;
+        })
+      }
+    }
   }
 </script>
 <style>
@@ -166,6 +184,7 @@
   }
   .container {
     width: 100%;
+    min-width: 525px;
     height: 400px;
     margin: 35px 0;
   }
