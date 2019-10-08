@@ -14,9 +14,28 @@
       <li v-for="(kid, kidIndex) in orderedKidsList" :key="kidIndex">Name: {{ kid.name }}Strength: {{ kid.strength }}Intelligence {{ kid.intelligence }}</li>
     </ul>
     <button class="btn btn-primary" type="button" @click="reverseOrder">reverse!</button>
+    <div class="container">
+      <h3>Serp Filters</h3>
+      <ul class="list-group inline">
+        <li v-for="(amenity, amenityIndex) in amenities" :key="amenityIndex" class="amenity_button">
+          <button class="btn">{{amenity.name}}</button></li>
+      </ul>
+      <div v-for="(hotel, hotelIndex) in hotels" :key="hotelIndex" class="hotel_item">
+        <div class="hotel_photo">{{ hotel.photo }}</div>
+        <div class="hotel_info">
+          <div class="hotel_name">{{ hotel.name }}</div>
+          <div class="hotel_address">{{ hotel.address }} </div>
+          <div class="hotel_amenities">
+            <ul class="list-group">
+             <li v-for="(amenity, amenityIndex) in hotel.amenities" :key="amenityIndex" class="amenity_item"></li>
+            </ul>
+          </div>
+          <div class="hotel_prices">{{hotel.price}}</div>
+        </div>
+      </div>
+      
+    </div>
   </div>
-
-  
 </template>
 <script>
   import Vue from "vue";
@@ -44,6 +63,63 @@
           { name: 'Kyle', strength: 40, intelligence: 80 }, 
           { name: 'Eric', strength: 45, intelligence: 100 }, 
           { name: 'Kenny', strength: 100, intelligence: 50 }
+        ],
+        hotels: [
+          { photo: "/some_address/some_photo.png", name: "Hotel Moscow Name", address: "Moscow, some street, 1",
+              amenities: [
+                { name: 'wi-fi'}, { name: 'bar'}, { name: 'pool'}, { name: 'transfer'},
+                { name: 'bath'}, { name: 'breakfast'}, { name: 'spa'}
+              ],
+            price: 3000  
+           },
+           { photo: "/some_address/some_photo.png", name: "Hotel  St.Pitersberg Name", address: "sSt.Pitersberg, some street, 2",
+              amenities: [
+                { name: 'wi-fi'}, { name: 'bar'}, { name: 'fitness'}, { name: 'transfer'},
+                { name: 'bath'}, { name: 'breakfast'}, { name: 'spa'}
+              ],
+            price: 3000  
+           },
+           { photo: "/some_address/some_photo.png", name: "Hotel Helsinki Name", address: "Helsinki, some street, 3",
+              amenities: [
+                { name: 'wi-fi'}, { name: 'bar'}, { name: 'fitness'}, { name: 'pool'},
+                { name: 'bath'}, { name: 'breakfast'}, { name: 'spa'}
+              ],
+            price: 3000  
+           },
+           { photo: "/some_address/some_photo.png", name: "Hotel Barselona Name", address: "Barselona, some street, 4",
+              amenities: [
+                { name: 'wi-fi'}, { name: 'bar'}, { name: 'fitness'}, { name: 'pool'}, { name: 'transfer'},
+                { name: 'breakfast'}, { name: 'spa'}
+              ],
+            price: 3000  
+           },
+           { photo: "/some_address/some_photo.png", name: "Hotel Berlin Name", address: "Berlin, some street, 5",
+              amenities: [
+                { name: 'wi-fi'}, { name: 'bar'}, { name: 'fitness'}, { name: 'pool'}, { name: 'transfer'},
+                { name: 'bath'}, { name: 'spa'}
+              ],
+            price: 3000  
+           },
+           { photo: "/some_address/some_photo.png", name: "Hotel Lisbon Name", address: "Lisbon, some street, 6",
+              amenities: [
+                { name: 'wi-fi'}, { name: 'bar'}, { name: 'fitness'}, { name: 'pool'}, { name: 'transfer'},
+                { name: 'bath'}, { name: 'breakfast'}
+              ],
+            price: 3000  
+           },
+        ],
+        amenities: [
+          { name: 'wi-fi'},
+          { name: 'bar'},
+          { name: 'fitness'},
+          { name: 'pool'},
+          { name: 'transfer'},
+          { name: 'bath'},
+          { name: 'breakfast'},
+          { name: 'spa'}
+        ],
+        hotels: [
+
         ]
       }
     },
@@ -87,5 +163,18 @@
 
   li {
     list-style-type: none;
+  }
+  .container {
+    width: 100%;
+    height: 400px;
+    margin: 35px 0;
+  }
+  .inline {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    flex-wrap: wrap;
   }
 </style>
