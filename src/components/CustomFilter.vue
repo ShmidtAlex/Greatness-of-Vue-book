@@ -23,7 +23,7 @@
       <h3>Serp Filters</h3>
       <ul class="list-group inline">
         <li v-for="(amenity, amenityIndex) in amenities" :key="amenityIndex" class="amenity_button">
-          <button @click="changeFilterValue(amenity.name)" class="btn">{{amenity.name}}</button></li>
+          <button @click="changeFilterValue(amenity.name)" class="btn" :class="{amenityActive: filterValue === amenity.name }">{{amenity.name}}</button></li>
       </ul>
       <!-- <div>this div is really exist {{hotels}}</div> -->
       <div v-for="(hotel, hotelIndex) in showHasAmenityOnly" :key="hotelIndex" class="hotel_item">
@@ -127,6 +127,8 @@
           { name: 'spa'}
         ],
         filterValue: 'wi-fi',
+        multiFiltersValue: [],
+        filterActive: false,
       }
     },
     methods: {
@@ -136,6 +138,7 @@
       },
       changeFilterValue: function(choosenAmenity) {
         this.filterValue = choosenAmenity;
+        event.target.classList.toggle('amenityActive');
       },
       
     },
@@ -154,7 +157,8 @@
         //third argument is a type of sorting, defined in methods (see below);
       },
       showHasAmenityOnly: function() {
-        let runningFilter = this.filterValue;
+        console.log(this.multiFiltersValue);
+        let runningFilter = !this.multiFiltersValue ? this.multiFiltersValue : this.filterValue;
         return this.hotels.filter(function(hotel){
           let newAmenities = hotel.amenities.filter(function(amenity){
              return amenity.name === runningFilter;
@@ -219,5 +223,10 @@
     border: 1px solid white;
     border-radius: 3px;
     box-shadow: 0px 0px 15px 5px rgba(255, 255, 255, 0.5);
+  }
+  .amenityActive {
+    background-color: rgba(255, 45, 45, 0.5);
+    border: 1px solid white;
+    color: white;
   }
 </style>
