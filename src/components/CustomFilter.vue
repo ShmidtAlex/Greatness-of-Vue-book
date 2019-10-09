@@ -23,7 +23,7 @@
       <h3>Serp Filters</h3>
       <ul class="list-group inline">
         <li v-for="(amenity, amenityIndex) in amenities" :key="amenityIndex" class="amenity_button">
-          <button @click="changeFilterValue(amenity.name)" class="btn" :class="{amenityActive: filterValue === amenity.name }">{{amenity.name}}</button></li>
+          <button @click="changeFilterValue(amenity.name)" class="btn">{{amenity.name}}</button></li>
       </ul>
       <!-- <div>this div is really exist {{hotels}}</div> -->
       <div v-for="(hotel, hotelIndex) in showHasAmenityOnly" :key="hotelIndex" class="hotel_item">
@@ -115,6 +115,22 @@
               ],
             price: 9000  
            },
+           { photo: "/some_address/some_photo.png", name: "Hotel Praga Name", address: "Praga, some street, 6",
+              amenities: [
+                
+              ],
+            price: 1200  
+           },{ photo: "/some_address/some_photo.png", name: "Hotel New York Name", address: "New York, some street, 6",
+              amenities: [
+                
+              ],
+            price: 1300  
+           },{ photo: "/some_address/some_photo.png", name: "Hotel Toronto Name", address: "Toronto, some street, 6",
+              amenities: [
+                
+              ],
+            price: 1400  
+           },
         ],
         amenities: [
           { name: 'wi-fi'},
@@ -126,9 +142,8 @@
           { name: 'breakfast'},
           { name: 'spa'}
         ],
-        filterValue: 'wi-fi',
+        filterValue: null,//initially there is no choosen amenities
         multiFiltersValue: [],
-        filterActive: false,
       }
     },
     methods: {
@@ -137,10 +152,21 @@
         this.order = (this.order === 'desc') ? 'asc' : 'desc';
       },
       changeFilterValue: function(choosenAmenity) {
-        this.filterValue = choosenAmenity;
+        if (!this.filterValue && this.multiFiltersValue.length === 0) {
+          this.filterValue = choosenAmenity;
+          this.multiFiltersValue.push(this.filterValue);
+        } else {
+          if (this.multiFiltersValue.includes(choosenAmenity)){
+            this.multiFiltersValue.splice(this.multiFiltersValue.indexOf(choosenAmenity), 1);
+            console.log(this.multiFiltersValue);
+          } else {
+            this.multiFiltersValue.push(choosenAmenity);
+            this.filterValue = null;
+            // console.log(this.multiFiltersValue);
+          }
+        }
         event.target.classList.toggle('amenityActive');
-      },
-      
+      }
     },
     mounted: function () {
       this.$nextTick(function () {
@@ -157,14 +183,35 @@
         //third argument is a type of sorting, defined in methods (see below);
       },
       showHasAmenityOnly: function() {
-        console.log(this.multiFiltersValue);
-        let runningFilter = !this.multiFiltersValue ? this.multiFiltersValue : this.filterValue;
-        return this.hotels.filter(function(hotel){
-          let newAmenities = hotel.amenities.filter(function(amenity){
-             return amenity.name === runningFilter;
-          })
-          return newAmenities.length;
-        })
+        // console.log(this.multiFiltersValue);
+        let runningFilter = this.filterValue ? this.filterValue : this.multiFiltersValue;
+        if (!this.filterValue && this.multiFiltersValue.length === 0) {
+          return this.hotels;
+        } else {
+          if (this.filterValue) {
+            return this.hotels.filter(function(hotel){
+              let newAmenities = hotel.amenities.filter(function(amenity){
+                return amenity.name === runningFilter;
+              })
+              return newAmenities.length;
+            })
+          } else {
+              
+                return this.hotels.filter(function(hotel){
+                  let newAmenities = hotel.amenities.filter(function(amenity) {
+                    return runningFilter.forEach(function(element){
+                      console.log(element);
+                      console.log(element === amenity.name);
+                      // if (element === amenity.name) {
+                        return element === amenity.name;
+                      // }
+                    });
+                  })
+                  return newAmenities.length;
+                })
+              
+          }
+        }
       }
     }
   }
