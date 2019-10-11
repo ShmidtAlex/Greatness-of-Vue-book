@@ -142,8 +142,10 @@
           { name: 'breakfast'},
           { name: 'spa'}
         ],
-        filterValue: null,//initially there is no choosen amenities
+        //filterValue: null,//initially there is no choosen amenities
         multiFiltersValue: [],
+        filteredData: null,
+        runningArray: null,
       }
     },
     methods: {
@@ -152,21 +154,28 @@
         this.order = (this.order === 'desc') ? 'asc' : 'desc';
       },
       changeFilterValue: function(choosenAmenity) {
-        if (!this.filterValue && this.multiFiltersValue.length === 0) {
-          this.filterValue = choosenAmenity;
-          this.multiFiltersValue.push(this.filterValue);
+        console.log(choosenAmenity);
+        if (!this.filteredData) {
+          this.filteredData = this.hotels.filter(function(hotel){
+            // console.log("case 1:", this.filteredData);
+            let newAmenities = hotel.amenities.filter(function(amenity){
+              return amenity.name === choosenAmenity;
+            })
+            return newAmenities.length;
+          })
         } else {
-          if (this.multiFiltersValue.includes(choosenAmenity)){
-            this.multiFiltersValue.splice(this.multiFiltersValue.indexOf(choosenAmenity), 1);
-            console.log(this.multiFiltersValue);
-          } else {
-            this.multiFiltersValue.push(choosenAmenity);
-            this.filterValue = null;
-            // console.log(this.multiFiltersValue);
-          }
+          console.log("case 2:", this.filteredData);
+           this.runningArray = this.filteredData.filter(function(hotel){
+            let newAmenities = hotel.amenities.filter(function(amenity) {
+              console.log(typeof amenity.name, typeof choosenAmenity);
+              return amenity.name === choosenAmenity;
+            })
+            return newAmenities.length;
+          })
         }
         event.target.classList.toggle('amenityActive');
       }
+
     },
     mounted: function () {
       this.$nextTick(function () {
@@ -183,36 +192,17 @@
         //third argument is a type of sorting, defined in methods (see below);
       },
       showHasAmenityOnly: function() {
-        // console.log(this.multiFiltersValue);
-        let runningFilter = this.filterValue ? this.filterValue : this.multiFiltersValue;
-        if (!this.filterValue && this.multiFiltersValue.length === 0) {
+        if (!this.filteredData && !this.runningArray) {
+          console.log("number 1");
           return this.hotels;
+        } else if (this.filteredData && !this.runningArray) {
+          console.log("number 2");
+          return this.filteredData;
         } else {
-          if (this.filterValue) {
-            return this.hotels.filter(function(hotel){
-              let newAmenities = hotel.amenities.filter(function(amenity){
-                return amenity.name === runningFilter;
-              })
-              return newAmenities.length;
-            })
-          } else {
-              
-                return this.hotels.filter(function(hotel){
-                  let newAmenities = hotel.amenities.filter(function(amenity) {
-                    return runningFilter.forEach(function(element){
-                      console.log(element);
-                      console.log(element === amenity.name);
-                      // if (element === amenity.name) {
-                        return element === amenity.name;
-                      // }
-                    });
-                  })
-                  return newAmenities.length;
-                })
-              
-          }
+          console.log("number 3");
+          return this.runningArray;
         }
-      }
+      },
     }
   }
 </script>
