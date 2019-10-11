@@ -154,7 +154,7 @@
         this.order = (this.order === 'desc') ? 'asc' : 'desc';
       },
       changeFilterValue: function(choosenAmenity) {
-        console.log(choosenAmenity);
+        // console.log(choosenAmenity);
         if (!this.filteredData) {
           this.filteredData = this.hotels.filter(function(hotel){
             // console.log("case 1:", this.filteredData);
@@ -163,11 +163,19 @@
             })
             return newAmenities.length;
           })
-        } else {
+        } else if (this.filteredData && !this.runningArray) {
           console.log("case 2:", this.filteredData);
            this.runningArray = this.filteredData.filter(function(hotel){
             let newAmenities = hotel.amenities.filter(function(amenity) {
-              console.log(typeof amenity.name, typeof choosenAmenity);
+              // console.log(typeof amenity.name, typeof choosenAmenity);
+              return amenity.name === choosenAmenity;
+            })
+            return newAmenities.length;
+          })
+        } else {
+          this.runningArray = this.runningArray.filter(function(hotel){
+            let newAmenities = hotel.amenities.filter(function(amenity) {
+              // console.log(typeof amenity.name, typeof choosenAmenity);
               return amenity.name === choosenAmenity;
             })
             return newAmenities.length;
