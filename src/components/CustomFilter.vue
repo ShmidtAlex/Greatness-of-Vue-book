@@ -14,7 +14,7 @@
       <h3>filtration with third-party library (lodash)</h3>
       <h4> kids raiting based on intelligence </h4>
       <ul class="list-group">
-        <li v-for="(kid, kidIndex) in orderedKidsList" :key="kidIndex">Name: {{ kid.name }}Strength: {{ kid.strength }}Intelligence {{ kid.intelligence }}</li>
+        <li v-for="(kid, kidIndex) in orderedKidsList" :key="kidIndex">Name: {{ kid.name }}, Strength: {{ kid.strength }}, Intelligence {{ kid.intelligence }}</li>
       </ul>
       <button class="btn btn-primary" type="button" @click="reverseOrder">reverse!</button>
     </div>
@@ -247,6 +247,9 @@
   }
   .hotel_item {
     border: 1px dotted white;
+    margin: 10px 0;
+    border-radius: 3px;
+    box-shadow: 0px 0px 15px 5px rgba(255, 255, 255, 0.5);
    /* display: flex;
     flex-direction: column;
     align-items: flex-start;*/
