@@ -132,18 +132,18 @@
             price: 1400  
            },
         ],
-        amenities: [
-          { name: 'wi-fi'},
-          { name: 'bar'},
-          { name: 'fitness'},
-          { name: 'pool'},
-          { name: 'transfer'},
-          { name: 'bath'},
-          { name: 'breakfast'},
-          { name: 'spa'}
+        choosenAmenities: [
+          { isWiFi: false},
+          { isBar: false},
+          { isFitness: false},
+          { isPool: false},
+          { isTransfer: false},
+          { isBath: false},
+          { isBreakfast: false},
+          { isSpa: false}
         ],
         //filterValue: null,//initially there is no choosen amenities
-        multiFiltersValue: [],
+        settedFilters: [],
         filteredData: null,
         runningArray: null,
         unsettedFilters: [],
@@ -154,20 +154,19 @@
         this.order = (this.order === 'desc') ? 'asc' : 'desc';
       },
       changeFiltersList: function(amenity) {
-        if (!this.multiFiltersValue.includes(amenity)) {
-          this.multiFiltersValue.push(amenity);
-          console.log("setted: ",this.multiFiltersValue);
+        if (!this.settedFilters.includes(amenity)) {
+          this.settedFilters.push(amenity);
+          // console.log("setted: ",this.settedFilters);
         } else {
-          // console.log("oppa!");
           this.unsettedFilters.push(amenity);
           let unsetted = this.unsettedFilters;
-          // let noRepeated  
-         this.runningArray = this.multiFiltersValue.filter(function(elem){
+         this.runningArray = this.settedFilters.filter(function(elem){
             return !unsetted.includes(elem);
           })
+
           // console.log(noRepeated, "unsetted: ", this.unsettedFilters);
-          // this.multiFiltersValue = noRepeated;
-          console.log("filtered array according to unsetted filters: ", this.multiFiltersValue);
+          // this.settedFilters = noRepeated;
+          console.log("filtered array according to unsetted filters: ", this.settedFilters);
 
           if(this.filteredData.length === 0) {
             this.unsettedFilters = [];
@@ -176,38 +175,64 @@
       },
       changeFilterValue: function(choosenAmenity) {
         this.changeFiltersList(choosenAmenity);
-        // console.log(this.multiFiltersValue);
-        if (!this.filteredData) {//если пользователь еще не выбирал никакие фильтры, базой для фильтрации служит весь
-          this.filteredData = this.hotels.filter(function(hotel){//массив hotels
-            let newAmenities = hotel.amenities.filter(function(amenity){
-              return amenity.name === choosenAmenity;
-            })
-            return newAmenities.length;
-          })
-        } //похоже, что на этом шаге можно фильтровать сразу при помощи приема использованного в предыдущем методе строчка 164
-        else if (this.filteredData && !this.runningArray) {//если какой-либо фильтр уже был выбран, то фильтруется
-          console.log("case 2:", this.filteredData);
-           this.runningArray = this.filteredData.filter(function(hotel){//массив, полученный в результате предыдущей фильтрации и он присваивается переменной this.runningArray
-            let newAmenities = hotel.amenities.filter(function(amenity) {
-              return amenity.name === choosenAmenity;
-            })
-            return newAmenities.length;
-          })
-        } else { //если фильтров больше чем два, то фильтруется  переменная this.runningArray и результаты фильтрации присваиваются ей же
-          this.runningArray = this.runningArray.filter(function(hotel){
-            let newAmenities = hotel.amenities.filter(function(amenity) {
-              return amenity.name === choosenAmenity;
-            })
-            return newAmenities.length;
-          })
+        let settedList = this.settedFilters;
+        let obj;
+        console.log(this.filteredData);
+        if (!this.filteredData) {
+          obj = this.hotels;
+          console.log('first filtration');
+
+        } else {
+          obj = this.filteredData;
+          console.log('next fitlration');
         }
+
+         this.filteredData = obj.filter(function(hotel){//массив hotels
+           let amenityArray = [];
+            hotel.amenities.forEach(function(elem) {
+                amenityArray.push(elem.name);
+            })
+          
+            console.log(amenityArray);
+            let somevar2 = settedList.filter(function(elem) {
+              console.log(amenityArray.includes(elem));
+
+               return amenityArray.includes(elem);
+
+            })
+            console.log(somevar2);
+            return somevar2.length;
+          })
+           // console.log(somevar);
+            
+            console.log(this.filteredData);
+        // } //похоже, что на этом шаге можно фильтровать сразу при помощи приема использованного в предыдущем методе строчка 164
+        // else if (this.filteredData && !this.runningArray) {//если какой-либо фильтр уже был выбран, то фильтруется
+        //   console.log("case 2:", this.filteredData);
+        //    this.runningArray = this.filteredData.filter(function(hotel){//массив, полученный в результате предыдущей фильтрации и он присваивается переменной this.runningArray
+        //     let newAmenities = hotel.amenities.filter(function(amenity) {
+        //       return amenity.name === choosenAmenity;
+        //     })
+        //     return newAmenities.length;
+        //   })
+        // } else { //если фильтров больше чем два, то фильтруется  переменная this.runningArray и результаты фильтрации присваиваются ей же
+        //   console.log("case 3: ", this.settedFilters);
+        //   let setted = this.settedFilters;
+        //   this.runningArray = this.runningArray.filter(function(hotel){
+        //     let newAmenities = hotel.amenities.filter(function(amenity) {
+        //       // console.log(this.settedFilters);
+        //       return setted.includes(amenity.name);
+        //     })
+        //     // return newAmenities.length;
+        //   })
+        // }
         //поидее, вместо этой бороды, нужно написать функцию которая работает с массивом фильтров сразу же, начиная с добавления первого фитльтра. И как это делать, я уже знаю.
         event.target.classList.toggle('amenityActive');
       }
     },
     mounted: function () {
       this.$nextTick(function () {
-        
+        // this.filteredData = this.hotels;
         // Code that will run only after the
         // entire view has been rendered
       })
@@ -220,16 +245,22 @@
         //third argument is a type of sorting, defined in methods (see below);
       },
       showHasAmenityOnly: function() {
-        if (!this.filteredData && !this.runningArray) {
-          console.log("number 1");
-          return this.hotels;
-        } else if (this.filteredData && !this.runningArray) {
-          console.log("number 2");
-          return this.filteredData;
+        if (!this.filteredData) {
+          return this.hotels
         } else {
-          console.log("number 3");
-          return this.runningArray;
+          return this.filteredData;
         }
+        
+        // if (!this.filteredData && !this.runningArray) {
+        //   console.log("number 1");
+        //   return this.hotels;
+        // } else if (this.filteredData && !this.runningArray) {
+        //   console.log("number 2");
+        //   return this.filteredData;
+        // } else {
+        //   console.log("number 3");
+        //   return this.runningArray;
+        // }
       },
     }
   }
