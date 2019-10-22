@@ -23,7 +23,7 @@
       <h3>Serp Filters</h3>
       <ul class="list-group inline">
         <li v-for="(amenity, amenityIndex) in amenities" :key="amenityIndex" class="amenity_button">
-          <button @click="changeFilterValue(amenity.name)" class="btn">{{amenity.name}}</button></li>
+          <button @click="changeFilterValue(amenity.name)" class="btn">{{amenity}}</button></li>
       </ul>
       <!-- <div>this div is really exist {{hotels}}</div> -->
       <div v-for="(hotel, hotelIndex) in showHasAmenityOnly" :key="hotelIndex" class="hotel_item">
@@ -132,16 +132,19 @@
             price: 1400  
            },
         ],
-        choosenAmenities: [
-          { isWiFi: false},
-          { isBar: false},
-          { isFitness: false},
-          { isPool: false},
-          { isTransfer: false},
-          { isBath: false},
-          { isBreakfast: false},
-          { isSpa: false}
+        amenities: [
+          "wi-fi", "bar", "fitness", "pool", "transfer", "bath", "breakfast", "spa"
         ],
+        choosenAmenities: {
+           isWiFi: false,
+           isBar: false,
+           isFitness: false,
+           isPool: false,
+           isTransfer: false,
+           isBath: false,
+           isBreakfast: false,
+           isSpa: false
+        },
         //filterValue: null,//initially there is no choosen amenities
         settedFilters: [],
         filteredData: null,
@@ -153,80 +156,7 @@
       reverseOrder: function() {
         this.order = (this.order === 'desc') ? 'asc' : 'desc';
       },
-      changeFiltersList: function(amenity) {
-        if (!this.settedFilters.includes(amenity)) {
-          this.settedFilters.push(amenity);
-          // console.log("setted: ",this.settedFilters);
-        } else {
-          this.unsettedFilters.push(amenity);
-          let unsetted = this.unsettedFilters;
-         this.runningArray = this.settedFilters.filter(function(elem){
-            return !unsetted.includes(elem);
-          })
-
-          // console.log(noRepeated, "unsetted: ", this.unsettedFilters);
-          // this.settedFilters = noRepeated;
-          console.log("filtered array according to unsetted filters: ", this.settedFilters);
-
-          if(this.filteredData.length === 0) {
-            this.unsettedFilters = [];
-          }
-        }
-      },
       changeFilterValue: function(choosenAmenity) {
-        this.changeFiltersList(choosenAmenity);
-        let settedList = this.settedFilters;
-        let obj;
-        console.log(this.filteredData);
-        if (!this.filteredData) {
-          obj = this.hotels;
-          console.log('first filtration');
-
-        } else {
-          obj = this.filteredData;
-          console.log('next fitlration');
-        }
-
-         this.filteredData = obj.filter(function(hotel){//массив hotels
-           let amenityArray = [];
-            hotel.amenities.forEach(function(elem) {
-                amenityArray.push(elem.name);
-            })
-          
-            console.log(amenityArray);
-            let somevar2 = settedList.filter(function(elem) {
-              console.log(amenityArray.includes(elem));
-
-               return amenityArray.includes(elem);
-
-            })
-            console.log(somevar2);
-            return somevar2.length;
-          })
-           // console.log(somevar);
-            
-            console.log(this.filteredData);
-        // } //похоже, что на этом шаге можно фильтровать сразу при помощи приема использованного в предыдущем методе строчка 164
-        // else if (this.filteredData && !this.runningArray) {//если какой-либо фильтр уже был выбран, то фильтруется
-        //   console.log("case 2:", this.filteredData);
-        //    this.runningArray = this.filteredData.filter(function(hotel){//массив, полученный в результате предыдущей фильтрации и он присваивается переменной this.runningArray
-        //     let newAmenities = hotel.amenities.filter(function(amenity) {
-        //       return amenity.name === choosenAmenity;
-        //     })
-        //     return newAmenities.length;
-        //   })
-        // } else { //если фильтров больше чем два, то фильтруется  переменная this.runningArray и результаты фильтрации присваиваются ей же
-        //   console.log("case 3: ", this.settedFilters);
-        //   let setted = this.settedFilters;
-        //   this.runningArray = this.runningArray.filter(function(hotel){
-        //     let newAmenities = hotel.amenities.filter(function(amenity) {
-        //       // console.log(this.settedFilters);
-        //       return setted.includes(amenity.name);
-        //     })
-        //     // return newAmenities.length;
-        //   })
-        // }
-        //поидее, вместо этой бороды, нужно написать функцию которая работает с массивом фильтров сразу же, начиная с добавления первого фитльтра. И как это делать, я уже знаю.
         event.target.classList.toggle('amenityActive');
       }
     },
@@ -245,22 +175,7 @@
         //third argument is a type of sorting, defined in methods (see below);
       },
       showHasAmenityOnly: function() {
-        if (!this.filteredData) {
-          return this.hotels
-        } else {
-          return this.filteredData;
-        }
-        
-        // if (!this.filteredData && !this.runningArray) {
-        //   console.log("number 1");
-        //   return this.hotels;
-        // } else if (this.filteredData && !this.runningArray) {
-        //   console.log("number 2");
-        //   return this.filteredData;
-        // } else {
-        //   console.log("number 3");
-        //   return this.runningArray;
-        // }
+       
       },
     }
   }
