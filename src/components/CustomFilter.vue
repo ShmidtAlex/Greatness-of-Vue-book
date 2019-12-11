@@ -23,7 +23,7 @@
       <h3>Serp Filters</h3>
       <ul class="list-group inline">
         <li v-for="(amenity, amenityIndex) in amenities" :key="amenityIndex" class="amenity_button">
-          <button @click="changeFilterValue(amenity.name)" class="btn">{{amenity}}</button></li>
+          <button @click="changeFilterValue(amenity)" class="btn">{{amenity}}</button></li>
       </ul>
       <!-- <div>this div is really exist {{hotels}}</div> -->
       <div v-for="(hotel, hotelIndex) in showHasAmenityOnly" :key="hotelIndex" class="hotel_item">
@@ -136,14 +136,14 @@
           "wi-fi", "bar", "fitness", "pool", "transfer", "bath", "breakfast", "spa"
         ],
         choosenAmenities: {
-           isWiFi: false,
-           isBar: false,
-           isFitness: false,
-           isPool: false,
-           isTransfer: false,
-           isBath: false,
-           isBreakfast: false,
-           isSpa: false
+           "wi-fi": false,
+           "bar": false,
+           "fitness": false,
+           "pool": false,
+           "transfer": false,
+           "bath": false,
+           "breakfast": false,
+           "spa": false
         },
         //filterValue: null,//initially there is no choosen amenities
         settedFilters: [],
@@ -156,12 +156,38 @@
       reverseOrder: function() {
         this.order = (this.order === 'desc') ? 'asc' : 'desc';
       },
+      checkIfAmenityOn: function(checkingAmenity) {
+        for (let key in this.choosenAmenities) {
+          if (checkingAmenity === this.choosenAmenities[key] && this.choosenAmenities[key] === false) {
+            this.choosenAmenities[key] = true;
+          } else if (checkingAmenity === this.choosenAmenities[key] && this.choosenAmenities[key] === true) {
+            this.choosenAmenities[key] === false;
+          }
+        }
+        console.log(this.choosenAmenities);
+      },
       changeFilterValue: function(choosenAmenity) {
-        event.target.classList.toggle('amenityActive');
+        this.checkIfAmenityOn();
+        // console.log(choosenAmenity);
+        var filteredArray = this.hotels.filter(function(elem){
+          for (let key in elem.amenities) {
+            // console.log(elem.amenities[key].name)
+            if (choosenAmenity === elem.amenities[key].name) {
+              // console.log(elem);
+              return elem;
+            }
+          }
+        })
+        console.log(filteredArray);
+        this.hotels = filteredArray;
       }
     },
     mounted: function () {
       this.$nextTick(function () {
+        // console.log(this.choosenAmenities);
+        for (let key in this.choosenAmenities) {
+          // console.log(`this.choosenAmenities.${key}`, key);
+        }
         // this.filteredData = this.hotels;
         // Code that will run only after the
         // entire view has been rendered
@@ -175,7 +201,7 @@
         //third argument is a type of sorting, defined in methods (see below);
       },
       showHasAmenityOnly: function() {
-       
+        return this.hotels;
       },
     }
   }
