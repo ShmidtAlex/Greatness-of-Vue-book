@@ -23,7 +23,7 @@
       <h3>Serp Filters</h3>
       <ul class="list-group inline">
         <li v-for="(amenity, amenityIndex) in amenities" :key="amenityIndex" class="amenity_button">
-          <button @click="changeFilterValue(amenity)" class="btn">{{amenity}}</button></li>
+          <button @click="changeFilterValue(amenity)" class="btn someClass">{{ amenity }}</button></li>
       </ul>
       <!-- <div>this div is really exist {{hotels}}</div> -->
       <div v-for="(hotel, hotelIndex) in showHasAmenityOnly" :key="hotelIndex" class="hotel_item">
@@ -53,8 +53,6 @@
   Vue.filter('snitch', function(hero){
     return hero.secretId + ' - это ' + hero.firstName + ' ' + hero.lastName + ' в реальной жизни!';
   })
-  //var _ = require('lodash');
-
   export default {
     name: 'Custom',
     data: function() {
@@ -145,7 +143,6 @@
            "breakfast": false,
            "spa": false
         },
-        //filterValue: null,//initially there is no choosen amenities
         settedFilters: [],
         filteredData: null,
         runningArray: null,
@@ -158,51 +155,70 @@
       },
       checkIfAmenityOn: function(checkingAmenity) {
         for (let key in this.choosenAmenities) {
-          if (checkingAmenity === this.choosenAmenities[key] && this.choosenAmenities[key] === false) {
+          if (checkingAmenity === key && this.choosenAmenities[key] === false) {
             this.choosenAmenities[key] = true;
-          } else if (checkingAmenity === this.choosenAmenities[key] && this.choosenAmenities[key] === true) {
-            this.choosenAmenities[key] === false;
+            this.settedFilters.push(key);
+          } else if (checkingAmenity === key && this.choosenAmenities[key] === true) {
+            this.choosenAmenities[key] = false;
+            let index = this.settedFilters.indexOf(key);
+          
+            this.settedFilters.splice(index, 1);
+            this.filteredData = this.hotels;
           }
         }
-        console.log(this.choosenAmenities);
+      },
+      changeColor: function(event) {
+        let isActive = event.target.classList.value;
+        if (!isActive.includes('amenityActive')) {
+          event.target.classList.add('amenityActive');
+        } else {
+          event.target.classList.remove('amenityActive');
+        }
       },
       changeFilterValue: function(choosenAmenity) {
-        this.checkIfAmenityOn();
-        // console.log(choosenAmenity);
-        var filteredArray = this.hotels.filter(function(elem){
-          for (let key in elem.amenities) {
-            // console.log(elem.amenities[key].name)
-            if (choosenAmenity === elem.amenities[key].name) {
-              // console.log(elem);
-              return elem;
-            }
-          }
+        this.changeColor(event);
+        this.checkIfAmenityOn(choosenAmenity);
+        let self = this;
+        if (!self.filteredData) {
+          self.filteredData = self.hotels;
+        } 
+        var filteredArray;
+        self.runningFilters.forEach(function(settedFilter) {
+            filteredArray = self.filteredData.filter(function(elem){
+              for (let keyElem in elem.amenities) {
+                if (settedFilter === elem.amenities[keyElem].name) {
+                  return elem;
+                }
+              }
+            })
+            self.filteredData = filteredArray;
         })
-        console.log(filteredArray);
-        this.hotels = filteredArray;
       }
     },
     mounted: function () {
       this.$nextTick(function () {
-        // console.log(this.choosenAmenities);
         for (let key in this.choosenAmenities) {
-          // console.log(`this.choosenAmenities.${key}`, key);
         }
-        // this.filteredData = this.hotels;
-        // Code that will run only after the
-        // entire view has been rendered
       })
     },
     computed: {
       orderedKidsList: function(){
         let order = this.order;
-        return _.orderBy(this.kids, 'intelligence', [order]); //first argument is an array,
-        //second argument is a parameter of sorting
-        //third argument is a type of sorting, defined in methods (see below);
+        return _.orderBy(this.kids, 'intelligence', [order]); 
       },
       showHasAmenityOnly: function() {
-        return this.hotels;
+        if (!this.filteredData) {
+          return this.hotels;
+        } else {
+          return this.filteredData;
+        }
       },
+      runningFilters: function() {
+        return this.settedFilters;
+      },
+      // choosenAmenitiesComputed: function() {
+      //   return this.choosenAmenities;
+      // }
     }
   }
 </script>
@@ -268,5 +284,20 @@
     background-color: rgba(255, 45, 45, 0.5);
     border: 1px solid white;
     color: white;
+  }
+  .btn {
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    /*font-weight: 800;*/
+  }
+  .btn.amenityActive:hover {
+    color: white;
+    background-color: rgba(254, 44, 44, 0.4);
+  }
+  .btn:hover {
+    background-color: lightgray;
   }
 </style>
