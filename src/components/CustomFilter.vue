@@ -23,7 +23,7 @@
       <h3>Serp Filters</h3>
       <ul class="list-group inline">
         <li v-for="(amenity, amenityIndex) in amenities" :key="amenityIndex" class="amenity_button">
-          <button @click="changeFilterValue(amenity)" class="btn someClass">{{ amenity }}</button></li>
+          <button @click="changeFilterValue(amenity)" class="btn">{{ amenity }}</button></li>
       </ul>
       <!-- <div>this div is really exist {{hotels}}</div> -->
       <div v-for="(hotel, hotelIndex) in showHasAmenityOnly" :key="hotelIndex" class="hotel_item">
@@ -155,34 +155,45 @@
       },
       checkIfAmenityOn: function(checkingAmenity) {
         for (let key in this.choosenAmenities) {
+          //if clicked amenity filter equals amenity name in the list of amenities and it's value is false
           if (checkingAmenity === key && this.choosenAmenities[key] === false) {
             this.choosenAmenities[key] = true;
+            //create new element in opted filters array
             this.settedFilters.push(key);
+            //if clicked amenity filter equals amenity name in the list of amenities but it's value is true
           } else if (checkingAmenity === key && this.choosenAmenities[key] === true) {
             this.choosenAmenities[key] = false;
+            //define index of choosen filter in array of opted filters
             let index = this.settedFilters.indexOf(key);
-          
+            //delete unclicked filter from array of opted filters
             this.settedFilters.splice(index, 1);
+            //make a basement for new search with leftover filters
             this.filteredData = this.hotels;
           }
         }
       },
       changeColor: function(event) {
         let isActive = event.target.classList.value;
+        //if classlist of clicked element not contains activeClass
         if (!isActive.includes('amenityActive')) {
+          //enable amenityActive class
           event.target.classList.add('amenityActive');
         } else {
+          //in other case disable this class
           event.target.classList.remove('amenityActive');
         }
       },
       changeFilterValue: function(choosenAmenity) {
+
         this.changeColor(event);
         this.checkIfAmenityOn(choosenAmenity);
+
         let self = this;
         if (!self.filteredData) {
           self.filteredData = self.hotels;
         } 
         var filteredArray;
+        //check, if every running filters contains in our filtered data
         self.runningFilters.forEach(function(settedFilter) {
             filteredArray = self.filteredData.filter(function(elem){
               for (let keyElem in elem.amenities) {
@@ -191,6 +202,7 @@
                 }
               }
             })
+            //assing new results of comparison to displayed object
             self.filteredData = filteredArray;
         })
       }
@@ -215,10 +227,7 @@
       },
       runningFilters: function() {
         return this.settedFilters;
-      },
-      // choosenAmenitiesComputed: function() {
-      //   return this.choosenAmenities;
-      // }
+      }
     }
   }
 </script>
