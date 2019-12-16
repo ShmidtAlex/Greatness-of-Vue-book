@@ -208,10 +208,10 @@
       }
     },
     mounted: function () {
-      this.$nextTick(function () {
-        for (let key in this.choosenAmenities) {
-        }
-      })
+      // this.$nextTick(function () {
+      //   for (let key in this.choosenAmenities) {
+      //   }
+      // })
     },
     computed: {
       orderedKidsList: function(){

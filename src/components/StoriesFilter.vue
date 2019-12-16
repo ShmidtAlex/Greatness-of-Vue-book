@@ -36,7 +36,7 @@
     <h1>Ordered stories</h1>
     <ul class="list-group">
       <li class="list-group-item" v-for="(story, index) in orderSearch" :key="index">
-        {{ story.writer }} told "{{ story.plot }}" and gave {{ story.upvotes }} votes
+        {{ story.writer }} told "{{ story.plot }}" and got {{ story.upvotes }} votes
       </li>
     </ul>
     <button class="btn btn-primary" @click="order = order*-1">in reverse order</button>
