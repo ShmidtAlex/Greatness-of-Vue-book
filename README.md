@@ -1,6 +1,6 @@
 # vue-english
 
-##description
+## description
 
  there are some exercises from "greatness of Vue.js" book. additionally, 
  there is a self-made calculator. should be finished, according to book.
